@@ -1,0 +1,16 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+
+  profiles:
+    active: native
+
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:../config-repo
+          # search-locations: file:C:/Users/Usuario/Documents/Code/JP/01-Spring_Cloud_Order_Billing_System/spring-cloud-order-billing-system/config-repo

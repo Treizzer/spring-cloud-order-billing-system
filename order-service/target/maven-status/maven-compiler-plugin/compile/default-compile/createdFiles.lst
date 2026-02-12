@@ -1,0 +1,3 @@
+com\treizer\order_service\entity\OrderEntity.class
+com\treizer\order_service\OrderServiceApplication.class
+com\treizer\order_service\repository\OrderRepository.class
