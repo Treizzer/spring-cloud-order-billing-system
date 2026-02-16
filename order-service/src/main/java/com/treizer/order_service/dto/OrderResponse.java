@@ -3,7 +3,7 @@ package com.treizer.order_service.dto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class OrderDto {
+public class OrderResponse {
 
     private Long id;
     private String customerName;
@@ -11,7 +11,7 @@ public class OrderDto {
     private String status;
     private LocalDateTime createdAt;
 
-    public OrderDto(Long id, String customerName, BigDecimal amount, String status, LocalDateTime createdAt) {
+    public OrderResponse(Long id, String customerName, BigDecimal amount, String status, LocalDateTime createdAt) {
         this.id = id;
         this.customerName = customerName;
         this.amount = amount;
