@@ -2,14 +2,14 @@ package com.treizer.order_service.controller;
 
 import java.util.List;
 
-import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.treizer.order_service.entity.OrderEntity;
+import com.treizer.order_service.dto.OrderRequest;
+import com.treizer.order_service.dto.OrderResponse;
 import com.treizer.order_service.service.OrderService;
 
 @RestController
@@ -23,12 +23,12 @@ public class OrderController {
     }
 
     @PostMapping
-    public OrderEntity create(@NonNull @RequestBody OrderEntity entity) {
-        return service.createOrder(entity);
+    public OrderResponse create(@RequestBody OrderRequest request) {
+        return service.createOrder(request);
     }
 
     @GetMapping
-    public List<OrderEntity> getAll() {
+    public List<OrderResponse> getAll() {
         return service.getAllOrders();
     }
     
