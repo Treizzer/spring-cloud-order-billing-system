@@ -2,20 +2,29 @@ package com.treizer.order_service.dto;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public final class OrderRequest {
 
     private final String customerName;
     private final BigDecimal amount;
 
-    public OrderRequest(String customerName, BigDecimal amount) {
-        if (customerName.isBlank()) {
+    // Deserialization
+    @JsonCreator
+    public OrderRequest(
+        @JsonProperty("customerName") String customerName, 
+        @JsonProperty("amount") BigDecimal amount
+    ) {
+        if (customerName == null || customerName.isBlank()) {
             throw new IllegalArgumentException("Se necesita el nombre del cliente");
         }
-        this.customerName = customerName;
 
-        if (amount == null || amount.compareTo(BigDecimal.ONE) <= 1) {
+        if (amount == null || amount.compareTo(BigDecimal.ONE) <= 0) {
             throw new IllegalArgumentException("Se necesita el precio de la orden");
         }
+        
+        this.customerName = customerName;
         this.amount = amount;
     }
 
