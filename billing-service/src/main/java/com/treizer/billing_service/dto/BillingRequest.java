@@ -5,13 +5,13 @@ import java.math.BigDecimal;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public final class InvoiceRequest {
+public final class BillingRequest {
 
     private final Long orderId;
     private final BigDecimal amount;
 
     @JsonCreator
-    public InvoiceRequest(
+    public BillingRequest(
         @JsonProperty("orderId") Long orderId,
         @JsonProperty("amount") BigDecimal amount
     ) {
