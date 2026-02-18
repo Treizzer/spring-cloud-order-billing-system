@@ -3,7 +3,7 @@ package com.treizer.billing_service.dto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class InvoiceResponse {
+public class BillingResponse {
 
     private Long id;
     private Long orderId;
@@ -12,7 +12,7 @@ public class InvoiceResponse {
     private BigDecimal total;
     private LocalDateTime createdAt;
 
-    public InvoiceResponse(
+    public BillingResponse(
         Long id, Long orderId, 
         BigDecimal amount, BigDecimal tax, BigDecimal total, 
         LocalDateTime createdAt
