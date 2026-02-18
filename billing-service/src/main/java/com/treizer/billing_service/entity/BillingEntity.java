@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "invoices")
-public class InvoiceEntity {
+public class BillingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,10 +35,10 @@ public class InvoiceEntity {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    protected InvoiceEntity() {
+    protected BillingEntity() {
     }
 
-    public InvoiceEntity(Long orderId, BigDecimal amount, BigDecimal tax, BigDecimal total) {
+    public BillingEntity(Long orderId, BigDecimal amount, BigDecimal tax, BigDecimal total) {
         this.orderId = Objects.requireNonNull(orderId, "orderId no puede ser null");
         this.amount = Objects.requireNonNull(amount, "amount no puede ser null");
         this.tax = Objects.requireNonNull(tax, "tax no puede ser null");
