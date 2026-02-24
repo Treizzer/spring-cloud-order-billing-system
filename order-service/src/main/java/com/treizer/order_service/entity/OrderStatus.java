@@ -4,6 +4,8 @@ public enum OrderStatus {
     
     CREADO,
     PAGADO,
+    FACTURADO,
+    FACTURACION_FALLO,
     CANCELADO
 
 }

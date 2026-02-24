@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.treizer.order_service.client.BillingClient;
 import com.treizer.order_service.dto.BillingRequest;
@@ -23,6 +24,7 @@ public class OrderService {
         this.billingClient = billingClient;
     }
 
+    @Transactional
     public OrderResponse createOrder(OrderRequest request) {
         OrderEntity entity = new OrderEntity(
             request.getCustomerName(),
@@ -31,8 +33,18 @@ public class OrderService {
 
         OrderEntity saved = repository.save(entity);
 
-        BillingRequest billingRequest = new BillingRequest(saved.getId(), saved.getAmount());
-        billingClient.createBilling(billingRequest);        
+        try {
+            // future: possible payment action
+            saved.markAsPaid();
+
+            BillingRequest billingRequest = new BillingRequest(saved.getId(), saved.getAmount());
+            billingClient.createBilling(billingRequest);
+            
+            saved.markAsBilled();
+
+        } catch (Exception e) {
+            saved.markAsBillingFailed();
+        }
 
         return new OrderResponse(
             saved.getId(),
@@ -43,6 +55,7 @@ public class OrderService {
         );
     }
 
+    @Transactional(readOnly = true)
     public List<OrderResponse> getAllOrders() {
         return repository.findAll()
             .stream()
