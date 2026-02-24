@@ -33,8 +33,18 @@ public class OrderService {
 
         OrderEntity saved = repository.save(entity);
 
-        BillingRequest billingRequest = new BillingRequest(saved.getId(), saved.getAmount());
-        billingClient.createBilling(billingRequest);        
+        try {
+            // future: possible payment action
+            saved.markAsPaid();
+
+            BillingRequest billingRequest = new BillingRequest(saved.getId(), saved.getAmount());
+            billingClient.createBilling(billingRequest);
+            
+            saved.markAsBilled();
+
+        } catch (Exception e) {
+            saved.markAsBillingFailed();
+        }
 
         return new OrderResponse(
             saved.getId(),
