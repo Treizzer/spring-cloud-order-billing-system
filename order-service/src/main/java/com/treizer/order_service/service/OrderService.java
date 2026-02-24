@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.treizer.order_service.client.BillingClient;
+import com.treizer.order_service.dto.BillingRequest;
 import com.treizer.order_service.dto.OrderRequest;
 import com.treizer.order_service.dto.OrderResponse;
 import com.treizer.order_service.entity.OrderEntity;
@@ -14,9 +16,11 @@ import com.treizer.order_service.repository.OrderRepository;
 public class OrderService {
 
     private final OrderRepository repository;
+    private final BillingClient billingClient;
 
-    public OrderService(OrderRepository repository) {
+    public OrderService(OrderRepository repository, BillingClient billingClient) {
         this.repository = repository;
+        this.billingClient = billingClient;
     }
 
     public OrderResponse createOrder(OrderRequest request) {
@@ -26,6 +30,9 @@ public class OrderService {
         );
 
         OrderEntity saved = repository.save(entity);
+
+        BillingRequest billingRequest = new BillingRequest(saved.getId(), saved.getAmount());
+        billingClient.createBilling(billingRequest);        
 
         return new OrderResponse(
             saved.getId(),
