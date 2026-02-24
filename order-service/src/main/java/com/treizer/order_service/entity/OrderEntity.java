@@ -89,10 +89,42 @@ public class OrderEntity {
 
     public void markAsPaid() {
         if (status != OrderStatus.CREADO) {
-            throw new IllegalStateException("Solo se pueden pagar órdenes creadas");
+            throw new IllegalStateException("Solo se pueden pagar órdenes creadas, actual: "+ status);
         }
 
         status = OrderStatus.PAGADO;
+    }
+
+    public void markAsBilled() {
+        if (status != OrderStatus.PAGADO && status != OrderStatus.FACTURACION_FALLO) {
+            throw new IllegalStateException(
+                "La orden no puede facturarse desde el estado: "+ status
+            );
+        }
+
+        status = OrderStatus.FACTURADO;
+    }
+
+    public void markAsBillingFailed() {
+        if (status != OrderStatus.PAGADO) {
+            throw new IllegalStateException("La orden no ha sido pagada: "+ status.toString());
+        }
+
+        status = OrderStatus.FACTURACION_FALLO;
+    }
+
+    public void markAsCanceled() {
+        if (status == OrderStatus.FACTURACION_FALLO) {
+            throw new IllegalStateException("No se puede cancelar una orden en proceso de facturación");
+        }
+        if (status == OrderStatus.FACTURADO) {
+            throw new IllegalStateException("No se puede cancelar una orden facturada");
+        }
+        if (status == OrderStatus.CANCELADO) {
+            throw new IllegalStateException("La orden ya está cancelada");
+        }
+
+        status = OrderStatus.CANCELADO;
     }
 
 }
