@@ -1,0 +1,25 @@
+server:
+  port: 8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/api/orders/**
+          filters:
+            - RewritePath=/api/orders/(?<segment>.*), /v1/orders/${segment}
+        
+        - id: billing-service
+          uri: lb://billing-service
+          predicates:
+            - Path=/api/billings/**
+          filters:
+            - RewritePath=/api/billings/(?<segment>.*), /v1/billings/${segment}
