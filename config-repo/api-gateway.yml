@@ -13,13 +13,13 @@ spring:
         - id: order-service
           uri: lb://order-service
           predicates:
-            - Path=/api/orders/**
+            - Path=/api/orders**
           filters:
-            - RewritePath=/api/orders/(?<segment>.*), /v1/orders/${segment}
+            - RewritePath=/api/orders(?<segment>/?.*), /v1/orders${segment}
         
         - id: billing-service
           uri: lb://billing-service
           predicates:
-            - Path=/api/billings/**
+            - Path=/api/billings**
           filters:
-            - RewritePath=/api/billings/(?<segment>.*), /v1/billings/${segment}
+            - RewritePath=/api/billings(?<segment>/?.*), /v1/billings${segment}
