@@ -23,3 +23,9 @@ spring:
             - Path=/api/billings**
           filters:
             - RewritePath=/api/billings(?<segment>/?.*), /v1/billings${segment}
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          secret-key: xilofono-manzana-de-paso-con-opurtinadad
