@@ -28,4 +28,4 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          secret-key: xilofono-manzana-de-paso-con-opurtinadad
+          secret-key: ${JWT_SECRET}
