@@ -25,3 +25,7 @@ replay_pid*
 
 # VSCode configurations
 .vscode/
+
+# enviroment variable
+.env
+application-local.yml
