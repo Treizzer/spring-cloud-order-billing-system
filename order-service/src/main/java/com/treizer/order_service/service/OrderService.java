@@ -6,12 +6,15 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.treizer.order_service.advice.custom.BillingServiceException;
 import com.treizer.order_service.client.BillingClient;
 import com.treizer.order_service.dto.BillingRequest;
 import com.treizer.order_service.dto.OrderRequest;
 import com.treizer.order_service.dto.OrderResponse;
 import com.treizer.order_service.entity.OrderEntity;
 import com.treizer.order_service.repository.OrderRepository;
+
+import feign.FeignException;
 
 @Service
 public class OrderService {
@@ -42,8 +45,9 @@ public class OrderService {
             
             saved.markAsBilled();
 
-        } catch (Exception e) {
+        } catch (FeignException e) {
             saved.markAsBillingFailed();
+            throw new BillingServiceException("Servicio Billing no disponible");
         }
 
         return new OrderResponse(
