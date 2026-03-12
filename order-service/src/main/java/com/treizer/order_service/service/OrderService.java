@@ -3,6 +3,8 @@ package com.treizer.order_service.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,8 @@ public class OrderService {
 
     private final OrderRepository repository;
     private final BillingClient billingClient;
+    
+    private static final Logger log = LoggerFactory.getLogger(OrderService.class);
 
     public OrderService(OrderRepository repository, BillingClient billingClient) {
         this.repository = repository;
@@ -34,6 +38,8 @@ public class OrderService {
             request.getAmount()
         );
 
+        log.info("Creando orden para cliente {}", request.getCustomerName());
+        
         OrderEntity saved = repository.save(entity);
 
         try {
@@ -46,6 +52,7 @@ public class OrderService {
             saved.markAsBilled();
 
         } catch (FeignException e) {
+            log.error("El servicio Billing falló en la orden {}", saved.getId(), e);
             saved.markAsBillingFailed();
             throw new BillingServiceException("Servicio Billing no disponible");
         }

@@ -2,6 +2,8 @@ package com.treizer.order_service.advice;
 
 import java.time.Instant;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,6 +17,8 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(OrderNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleOrderNotFound(
@@ -37,6 +41,8 @@ public class GlobalExceptionHandler {
         BillingServiceException ex,
         HttpServletRequest request
     ) {
+        log.error("Falla del servicio Billing en {}", request.getRequestURI(), ex);
+
         ErrorResponse error = new ErrorResponse(
             Instant.now(),
             HttpStatus.SERVICE_UNAVAILABLE.value(),
@@ -70,11 +76,13 @@ public class GlobalExceptionHandler {
         Exception ex,
         HttpServletRequest request
     ) {
+        log.error("Ocurrió un error inesperado en {}", request.getRequestURI(), ex);
+        
         ErrorResponse error = new ErrorResponse(
             Instant.now(),
             HttpStatus.INTERNAL_SERVER_ERROR.value(),
             "Internal Server Error",
-            "Unexpected error occurred",
+            "Ocurrió un error inesperado",
             request.getRequestURI()
         );
 
