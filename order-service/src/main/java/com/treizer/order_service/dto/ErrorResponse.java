@@ -9,6 +9,7 @@ public final class ErrorResponse {
     private final String error;
     private final String message;
     private final String path;
+    private final String service;
     
     public ErrorResponse(
         Instant timestamp, int status, String error, String message, String path
@@ -18,6 +19,7 @@ public final class ErrorResponse {
         this.error = error;
         this.message = message;
         this.path = path;
+        this.service = "order-service";
     }
 
     public Instant getTimestamp() {
@@ -40,6 +42,8 @@ public final class ErrorResponse {
         return path;
     }
 
-    
+    public String getService() {
+        return service;
+    }    
     
 }
