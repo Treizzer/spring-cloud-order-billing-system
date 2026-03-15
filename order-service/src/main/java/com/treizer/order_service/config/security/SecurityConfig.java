@@ -1,4 +1,4 @@
-package com.treizer.order_service.config;
+package com.treizer.order_service.config.security;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;

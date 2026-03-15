@@ -1,4 +1,4 @@
-package com.treizer.order_service.advice.custom;
+package com.treizer.order_service.exception;
 
 public class BillingServiceException extends RuntimeException {
 
