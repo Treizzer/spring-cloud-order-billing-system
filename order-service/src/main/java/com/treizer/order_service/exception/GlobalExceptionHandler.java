@@ -1,4 +1,4 @@
-package com.treizer.order_service.advice;
+package com.treizer.order_service.exception;
 
 import java.time.Instant;
 
@@ -9,9 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.treizer.order_service.advice.custom.BillingServiceException;
-import com.treizer.order_service.advice.custom.OrderNotFoundException;
-import com.treizer.order_service.dto.ErrorResponse;
+import com.treizer.order_service.api.ErrorResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
 

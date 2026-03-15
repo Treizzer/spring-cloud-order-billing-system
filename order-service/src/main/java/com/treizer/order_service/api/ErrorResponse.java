@@ -1,4 +1,4 @@
-package com.treizer.order_service.dto;
+package com.treizer.order_service.api;
 
 import java.time.Instant;
 

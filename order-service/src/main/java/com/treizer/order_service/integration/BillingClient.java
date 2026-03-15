@@ -1,10 +1,10 @@
-package com.treizer.order_service.client;
+package com.treizer.order_service.integration;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.treizer.order_service.config.FeignSecurityConfig;
+import com.treizer.order_service.config.security.FeignSecurityConfig;
 import com.treizer.order_service.dto.BillingRequest;
 
 @FeignClient(

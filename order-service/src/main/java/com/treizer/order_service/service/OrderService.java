@@ -8,12 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.treizer.order_service.advice.custom.BillingServiceException;
-import com.treizer.order_service.client.BillingClient;
 import com.treizer.order_service.dto.BillingRequest;
 import com.treizer.order_service.dto.OrderRequest;
 import com.treizer.order_service.dto.OrderResponse;
 import com.treizer.order_service.entity.OrderEntity;
+import com.treizer.order_service.exception.BillingServiceException;
+import com.treizer.order_service.integration.BillingClient;
 import com.treizer.order_service.repository.OrderRepository;
 
 import feign.FeignException;
