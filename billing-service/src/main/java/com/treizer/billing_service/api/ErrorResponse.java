@@ -1,4 +1,4 @@
-package com.treizer.billing_service.exception;
+package com.treizer.billing_service.api;
 
 import java.time.Instant;
 
