@@ -17,6 +17,7 @@ import com.treizer.order_service.integration.BillingClient;
 import com.treizer.order_service.repository.OrderRepository;
 
 import feign.FeignException;
+import io.github.resilience4j.retry.annotation.Retry;
 
 @Service
 public class OrderService {
@@ -31,6 +32,7 @@ public class OrderService {
         this.billingClient = billingClient;
     }
 
+    @Retry(name = "billingService")
     @Transactional
     public OrderResponse createOrder(OrderRequest request) {
         OrderEntity entity = new OrderEntity(
