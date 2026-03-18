@@ -32,7 +32,11 @@ resilience4j:
         max-attempts: 3
         wait-duration: 2s
         retry-exceptions:
-          - feign.FeignException
+          - com.treizer.order_service.exception.BillingServiceException
+
+logging:
+  level:
+    io.github.resilience4j.retry: DEBUG
 
 # test:
 #   message: "Hola desde Config Server"
