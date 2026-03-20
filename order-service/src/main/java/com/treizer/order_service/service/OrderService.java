@@ -8,30 +8,28 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.treizer.order_service.dto.BillingRequest;
 import com.treizer.order_service.dto.OrderRequest;
 import com.treizer.order_service.dto.OrderResponse;
 import com.treizer.order_service.entity.OrderEntity;
 import com.treizer.order_service.exception.BillingServiceException;
-import com.treizer.order_service.integration.BillingClient;
+import com.treizer.order_service.integration.BillingProcessor;
 import com.treizer.order_service.repository.OrderRepository;
-
-import feign.FeignException;
 
 @Service
 public class OrderService {
 
     private final OrderRepository repository;
-    private final BillingClient billingClient;
+    private final BillingProcessor billingProcessor;
     
     private static final Logger log = LoggerFactory.getLogger(OrderService.class);
 
-    public OrderService(OrderRepository repository, BillingClient billingClient) {
+    public OrderService(OrderRepository repository, BillingProcessor billingProcessor) {
         this.repository = repository;
-        this.billingClient = billingClient;
+        this.billingProcessor = billingProcessor;
     }
 
-    @Transactional
+    // future: add "Orchestrator"
+    @Transactional(noRollbackFor = BillingServiceException.class)
     public OrderResponse createOrder(OrderRequest request) {
         OrderEntity entity = new OrderEntity(
             request.getCustomerName(),
@@ -39,19 +37,18 @@ public class OrderService {
         );
 
         log.info("Creando orden para cliente {}", request.getCustomerName());
-        
         OrderEntity saved = repository.save(entity);
+        log.info("Orden creada con id {}", saved.getId());
 
         try {
             // future: possible payment action
             saved.markAsPaid();
 
-            BillingRequest billingRequest = new BillingRequest(saved.getId(), saved.getAmount());
-            billingClient.createBilling(billingRequest);
-            
+            billingProcessor.processBilling(saved);
+
             saved.markAsBilled();
 
-        } catch (FeignException e) {
+        } catch (Exception e) {
             log.error("El servicio Billing falló en la orden {}", saved.getId(), e);
             saved.markAsBillingFailed();
             throw new BillingServiceException("Servicio Billing no disponible");
