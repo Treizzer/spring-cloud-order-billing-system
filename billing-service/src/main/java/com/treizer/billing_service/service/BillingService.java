@@ -3,6 +3,7 @@ package com.treizer.billing_service.service;
 import java.math.BigDecimal;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.treizer.billing_service.dto.BillingRequest;
 import com.treizer.billing_service.dto.BillingResponse;
@@ -18,6 +19,7 @@ public class BillingService {
         this.repository = repository;
     }
 
+    @Transactional
     public BillingResponse createBilling(BillingRequest request) {
         BigDecimal tax = request.getAmount().multiply(new BigDecimal("0.16"));
         BigDecimal total = request.getAmount().add(tax);
