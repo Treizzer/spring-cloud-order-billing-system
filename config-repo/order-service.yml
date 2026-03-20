@@ -32,7 +32,7 @@ resilience4j:
         max-attempts: 3
         wait-duration: 2s
         retry-exceptions:
-          - com.treizer.order_service.exception.BillingServiceException
+          - feign.FeignException
 
 logging:
   level:
