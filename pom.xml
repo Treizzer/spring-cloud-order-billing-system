@@ -50,7 +50,7 @@
     </dependencies>
   </dependencyManagement>
 
-  <!-- <build>
+  <build>
     <pluginManagement>
       <plugins>
 
@@ -62,7 +62,7 @@
 
       </plugins>
     </pluginManagement>
-  </build> -->
+  </build>
 
   <!-- Modules -->
   <modules>
