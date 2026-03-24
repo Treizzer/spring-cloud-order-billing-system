@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.treizer.order_service.dto.BillingRequest;
 import com.treizer.order_service.entity.OrderEntity;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 
 @Service
@@ -21,6 +22,10 @@ public class BillingProcessor {
     }
 
     @Retry(name = "billingService")
+    @CircuitBreaker(
+        name = "billingService", 
+        fallbackMethod = "billingFallback"
+    )
     public void processBilling(OrderEntity order) {
         BillingRequest billingRequest = new BillingRequest(order.getId(), order.getAmount());
         log.info("Intentando crear billing para orden {}", order.getId());
