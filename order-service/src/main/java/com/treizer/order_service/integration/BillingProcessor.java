@@ -4,32 +4,29 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.treizer.order_service.dto.BillingRequest;
 import com.treizer.order_service.entity.OrderEntity;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import io.github.resilience4j.retry.annotation.Retry;
 
 @Service
 public class BillingProcessor {
     
-    private final BillingClient billingClient;
-
+    private final BillingRetryProcessor retryProcessor;
     private static final Logger log = LoggerFactory.getLogger(BillingProcessor.class);
 
-    public BillingProcessor(BillingClient billingClient) {
-        this.billingClient = billingClient;
+    public BillingProcessor(BillingRetryProcessor retryProcessor) {
+        this.retryProcessor = retryProcessor;
     }
 
-    @Retry(name = "billingService")
-    @CircuitBreaker(
-        name = "billingService", 
-        fallbackMethod = "billingFallback"
-    )
+    @CircuitBreaker(name = "billingService", fallbackMethod = "billingFallback")
     public void processBilling(OrderEntity order) {
-        BillingRequest billingRequest = new BillingRequest(order.getId(), order.getAmount());
-        log.info("Intentando crear billing para orden {}", order.getId());
-        billingClient.createBilling(billingRequest);
+        retryProcessor.processBillingWithRetry(order);
+    }
+
+    public void billingFallback(OrderEntity order, Throwable ex) {
+        log.error("Fallback activado para orden {}", order.getId(), ex);
+        
+        order.markAsBillingFailed(); // pesist for dirty checking
     }
     
 }
