@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.treizer.order_service.dto.OrderRequest;
 import com.treizer.order_service.dto.OrderResponse;
 import com.treizer.order_service.entity.OrderEntity;
-import com.treizer.order_service.exception.BillingServiceException;
+import com.treizer.order_service.entity.OrderStatus;
 import com.treizer.order_service.integration.BillingProcessor;
 import com.treizer.order_service.repository.OrderRepository;
 
@@ -29,7 +29,8 @@ public class OrderService {
     }
 
     // future: add "Orchestrator"
-    @Transactional(noRollbackFor = BillingServiceException.class)
+    // @Transactional(noRollbackFor = BillingServiceException.class)
+    @Transactional
     public OrderResponse createOrder(OrderRequest request) {
         OrderEntity entity = new OrderEntity(
             request.getCustomerName(),
@@ -40,19 +41,27 @@ public class OrderService {
         OrderEntity saved = repository.save(entity);
         log.info("Orden creada con id {}", saved.getId());
 
-        try {
-            // future: possible payment action
-            saved.markAsPaid();
+        saved.markAsPaid();
 
-            billingProcessor.processBilling(saved);
+        billingProcessor.processBilling(saved);
 
-            saved.markAsBilled();
-
-        } catch (Exception e) {
-            log.error("El servicio Billing falló en la orden {}", saved.getId(), e);
-            saved.markAsBillingFailed();
-            throw new BillingServiceException("Servicio Billing no disponible");
+        if (saved.getStatus() == OrderStatus.FACTURACION_FALLO) {
+            log.warn("Orden {} con fallo en billing", saved.getId());
         }
+        else {
+            saved.markAsBilled();
+        }
+
+        // try {
+        //     // future: possible payment action
+        //     saved.markAsPaid();
+        //     billingProcessor.processBilling(saved);
+        //     saved.markAsBilled();
+        // } catch (Exception e) {
+        //     log.error("El servicio Billing falló en la orden {}", saved.getId(), e);
+        //     saved.markAsBillingFailed();
+        //     throw new BillingServiceException("Servicio Billing no disponible");
+        // }
 
         return new OrderResponse(
             saved.getId(),

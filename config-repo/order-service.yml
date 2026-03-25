@@ -32,7 +32,21 @@ resilience4j:
         max-attempts: 3
         wait-duration: 2s
         retry-exceptions:
-          - feign.FeignException
+          # - feign.FeignException # bad: include 4xx errors (client)
+          - feign.FeignException$ServiceUnavailable
+          - feign.RetryableException
+          - java.io.IOException
+          
+# CLOSED: all normal
+# OPEN: blocking calls
+# HALF-OPEN: attempt again
+  circuitbreaker:
+    instances:
+      billingService:
+        sliding-window-size: 5 # check record failure of calls
+        failure-rate-threshold: 50 # percent fault tolerance
+        wait-duration-in-open-state: 10s # circuit blocking in seconds
+        permitted-number-of-calls-in-half-open-state: 2
 
 logging:
   level:
