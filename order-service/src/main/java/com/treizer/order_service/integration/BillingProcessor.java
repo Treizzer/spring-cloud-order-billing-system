@@ -26,7 +26,7 @@ public class BillingProcessor {
     public void billingFallback(OrderEntity order, Throwable ex) {
         log.error("Fallback activado para orden {}", order.getId(), ex);
         
-        order.markAsBillingFailed(); // pesist for dirty checking
+        order.markAsBillingFailed(); // persist for dirty checking
     }
     
 }
