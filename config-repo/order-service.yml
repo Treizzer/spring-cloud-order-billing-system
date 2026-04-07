@@ -6,7 +6,7 @@ spring:
     url: jdbc:mysql://localhost:3306/orders_db
     username: root
     password:
-  # Dev only. In production, you'd use migrations with Flyway or Liquibase.
+  # Dev only. In production, you would use migrations with Flyway or Liquibase.
   jpa:
     hibernate:
       ddl-auto: update
@@ -20,6 +20,8 @@ spring:
 
 # Register on Eureka
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
@@ -51,6 +53,23 @@ resilience4j:
 logging:
   level:
     io.github.resilience4j.retry: DEBUG
+    org.springframework.cloud.openfeign: DEBUG
 
 # test:
 #   message: "Hola desde Config Server"
+
+management:
+  tracing:
+    sampling:
+      probability: "1.0" # capture all requests (dev only)
+    propagation:
+      type: w3c
+
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+
+  endpoints:
+    web:
+      exposure:
+        include: "*"

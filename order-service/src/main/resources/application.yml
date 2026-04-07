@@ -3,11 +3,14 @@ spring:
     name: order-service
 
   config:
-    import: "optional:configserver:"
-  cloud:
-    config:
-      uri:
-      - http://localhost:8888
+    import: optional:configserver:http://localhost:8888
+
+  # config:
+  #   import: "optional:configserver:"
+  # cloud:
+  #   config:
+  #     uri:
+  #     - http://localhost:8888
 
   # profiles:
   #   active: local
