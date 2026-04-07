@@ -12,6 +12,8 @@ C:\Users\Usuario\Documents\Code\JP\01-Spring_Cloud_Order_Billing_System\spring-c
 C:\Users\Usuario\Documents\Code\JP\01-Spring_Cloud_Order_Billing_System\spring-cloud-order-billing-system\order-service\src\main\java\com\treizer\order_service\exception\OrderNotFoundException.java
 C:\Users\Usuario\Documents\Code\JP\01-Spring_Cloud_Order_Billing_System\spring-cloud-order-billing-system\order-service\src\main\java\com\treizer\order_service\integration\BillingClient.java
 C:\Users\Usuario\Documents\Code\JP\01-Spring_Cloud_Order_Billing_System\spring-cloud-order-billing-system\order-service\src\main\java\com\treizer\order_service\integration\BillingProcessor.java
+C:\Users\Usuario\Documents\Code\JP\01-Spring_Cloud_Order_Billing_System\spring-cloud-order-billing-system\order-service\src\main\java\com\treizer\order_service\integration\BillingProcessorManual.java
+C:\Users\Usuario\Documents\Code\JP\01-Spring_Cloud_Order_Billing_System\spring-cloud-order-billing-system\order-service\src\main\java\com\treizer\order_service\integration\BillingRetryProcessor.java
 C:\Users\Usuario\Documents\Code\JP\01-Spring_Cloud_Order_Billing_System\spring-cloud-order-billing-system\order-service\src\main\java\com\treizer\order_service\OrderServiceApplication.java
 C:\Users\Usuario\Documents\Code\JP\01-Spring_Cloud_Order_Billing_System\spring-cloud-order-billing-system\order-service\src\main\java\com\treizer\order_service\repository\OrderRepository.java
 C:\Users\Usuario\Documents\Code\JP\01-Spring_Cloud_Order_Billing_System\spring-cloud-order-billing-system\order-service\src\main\java\com\treizer\order_service\service\OrderService.java
